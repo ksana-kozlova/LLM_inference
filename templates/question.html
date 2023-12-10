@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe4e1;
+            margin: 0;
+            padding: 20px;
+        }
+        #container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .form-container {
+            width: 48%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], button {
+            width: calc(100% - 20px); /* Уменьшаем на размер padding */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Добавлено свойство box-sizing */
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.6); /* Добавляем подсветку при фокусе */
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .history {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history h3 {
+            margin-top: 0;
+        }
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .history li {
+            border-bottom: 1px solid #eee;
+            padding: 5px;
+        }
+        .history li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    {% comment %} <h2>LLM inference acceleration</h2> {% endcomment %}
+    <div id="container">
+        <!-- Контейнер для первой нейронной сети -->
+        <div class="form-container">
+            <input type="text" id="question1" placeholder="Введите вопрос">
+            <button onclick="sendQuestion('question1', 'answer1', 'history_list1', '/', 'question1')">Отправить</button>
+            <div id="answer1"></div>
+            <div class="history">
+                <h3>История запросов:</h3>
+                <ul id="history_list1"></ul>
+            </div>
+        </div>
+
+        <!-- Контейнер для второй нейронной сети -->
+        <div class="form-container">
+            <input type="text" id="question2" placeholder="Введите вопрос">
+            <button onclick="sendQuestion('question2', 'answer2', 'history_list2', '/', 'question2')">Отправить</button>
+            <div id="answer2"></div>
+            <div class="history">
+                <h3>История запросов:</h3>
+                <ul id="history_list2"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        function sendQuestion(inputId, answerId, historyId, route, type) {
+            var inputField = document.getElementById(inputId);
+            var query = inputField.value;
+            fetch(route, {
+                method: "POST",
+                body: new URLSearchParams("type=" + type + "&question=" + query),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(answerId).textContent = "Ответ: " + data.answer;
+    
+                var historyList = document.getElementById(historyId);
+                var newHistoryItem = document.createElement("li");
+                newHistoryItem.innerHTML = "<strong>Запрос:</strong> " + query + "<br><strong>Ответ:</strong> " + data.answer + "<br><strong>Время ответа:</strong> " + data.response_time + " секунд";
+                historyList.prepend(newHistoryItem);
+
+                inputField.value = ''; // Очищаем поле ввода после отправки запроса
+            });
+        }
+    </script>
+</body>
+</html>
