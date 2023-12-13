@@ -30,18 +30,18 @@
         }
         input[type="text"]:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #997a8d;
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.6); /* Добавляем подсветку при фокусе */
         }
         button {
-            background-color: #007bff;
+            background-color: #808080;
             color: white;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #808080;
         }
         .history {
             margin-top: 30px;
@@ -71,6 +71,9 @@
     <div id="container">
         <!-- Контейнер для первой нейронной сети -->
         <div class="form-container">
+            <br><strong>Базовая модель</strong>
+            <br>
+            <br>
             <input type="text" id="question1" placeholder="Введите вопрос">
             <button onclick="sendQuestion('question1', 'answer1', 'history_list1', '/', 'question1')">Отправить</button>
             <div id="answer1"></div>
@@ -82,6 +85,9 @@
 
         <!-- Контейнер для второй нейронной сети -->
         <div class="form-container">
+            <br><strong>Оптимизированная модель</strong>
+            <br>
+            <br>
             <input type="text" id="question2" placeholder="Введите вопрос">
             <button onclick="sendQuestion('question2', 'answer2', 'history_list2', '/', 'question2')">Отправить</button>
             <div id="answer2"></div>
