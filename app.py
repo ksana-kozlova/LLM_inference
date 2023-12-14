@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template, session
 from flask_session import Session
 from datetime import datetime
-from neural_network.model import run_model
+from neural_network import model, model2
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
@@ -11,10 +11,10 @@ Session(app)
 
 
 def generate_answer1(question):
-    return run_model(question)
+    return model.run_model(question)
 
 def generate_answer2(question):
-    return run_model(question)
+    return model2.run_model(question)
 
 
 @app.route("/", methods=["GET", "POST"])
